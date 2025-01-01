@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
           '/detail-screen': (context) => const DetailScreen(),
           '/checkout-screen': (context) => const CheckoutScreen(),
           '/home-screen': (context) => const HomeScreen(),
+          '/boarding-screen': (context) => const BoardingScreen(),
 
           // '/balance-screen': (context) => const BalanceScreen(),
           // '/spending-screen': (context) => const SpendingScreen(),
@@ -167,9 +168,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.pop(context);
               },
             ),
-            listTilePush(context, 'News Screen', '/news-screen'),
-            listTilePush(context, 'Datas Screen', '/datas-screen'),
-            listTilePush(context, 'Counter Screen', '/counter-screen'),
+            listTilePush(context, 'Home Screen Desri', '/home-screen'),
+            listTilePush(context, 'Detail Screen Desri', '/detail-screen'),
+            listTilePush(context, 'Boarding Screen', '/boarding-screen'),
             listTilePush(context, 'Balance Screen', '/balance-screen'),
             listTilePush(context, 'Spending Screen', '/spending-screen'),
             ListTile(
