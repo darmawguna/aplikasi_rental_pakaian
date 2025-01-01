@@ -1,3 +1,4 @@
+import 'package:app_rental/screens/screens/BoardingScreen/boarding_screen.dart';
 import 'package:app_rental/screens/screens/CheckoutScreen/checkout_screen.dart';
 import 'package:app_rental/screens/screens/DetailScreen/detail_screen.dart';
 import 'package:app_rental/screens/screens/HomeScreen/home_screen.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(primarySwatch: Colors.blue),
 
-        initialRoute: '/login-screen',
+        initialRoute: '/',
 
         // initialRoute: '/',
         routes: {
@@ -85,14 +86,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    const CheckoutScreen(),
-    const ProfileScreen(),
+    const BoardingScreen(),
+    const DetailScreen()
   ];
 
   final List<String> _appBarTitles = const [
     'Home',
-    'Settings',
-    'Profile',
+    'Boarding',
+    'Detail',
   ]; // List of titles corresponding to each screen
 
   void _onItemTapped(int index) {
