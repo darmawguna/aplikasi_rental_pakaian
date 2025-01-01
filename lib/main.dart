@@ -1,9 +1,9 @@
-import 'package:app_rental/screens/screens/BoardingScreen/boarding_screen.dart';
-import 'package:app_rental/screens/screens/CheckoutScreen/checkout_screen.dart';
-import 'package:app_rental/screens/screens/DetailScreen/detail_screen.dart';
-import 'package:app_rental/screens/screens/HomeScreen/home_screen.dart';
-import 'package:app_rental/screens/screens/LoginScreen/login_screen.dart';
-import 'package:app_rental/screens/screens/ProfileScreen/profile_screen.dart';
+import 'package:app_rental/screens/routes/BoardingScreen/boarding_screen.dart';
+import 'package:app_rental/screens/routes/CheckoutScreen/checkout_screen.dart';
+import 'package:app_rental/screens/routes/DetailScreen/detail_screen.dart';
+import 'package:app_rental/screens/routes/HomeScreen/home_screen.dart';
+import 'package:app_rental/screens/routes/LoginScreen/login_screen.dart';
+import 'package:app_rental/screens/routes/ProfileScreen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
