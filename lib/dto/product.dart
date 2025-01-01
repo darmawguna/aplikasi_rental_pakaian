@@ -1,4 +1,4 @@
-import 'dart:ffi';
+
 
 class Product {
   int id;
@@ -6,7 +6,7 @@ class Product {
   String productCategory;
   String productSize;
   String productImage;
-  Float productPrice;
+  double productPrice;
   String productDescription;
   int productAvailability;
 
@@ -29,7 +29,7 @@ class Product {
       productCategory: json['product_category'] as String,
       productSize: json['product_size'] as String,
       productImage: json['product_image'] as String,
-      productPrice: json['product_price'] as Float,
+      productPrice: json['product_price'] as double,
       productDescription: json['product_description'] as String,
       productAvailability: json['product_availibilty'] as int,
     );
