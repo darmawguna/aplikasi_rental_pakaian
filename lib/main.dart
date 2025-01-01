@@ -1,9 +1,11 @@
-import 'package:app_rental/screens/screens/BoardingScreen/boarding_screen.dart';
-import 'package:app_rental/screens/screens/CheckoutScreen/checkout_screen.dart';
-import 'package:app_rental/screens/screens/DetailScreen/detail_screen.dart';
-import 'package:app_rental/screens/screens/HomeScreen/home_screen.dart';
-import 'package:app_rental/screens/screens/LoginScreen/login_screen.dart';
-import 'package:app_rental/screens/screens/ProfileScreen/profile_screen.dart';
+// import 'package:app_rental/dto/payment.dart';
+import 'package:app_rental/screens/routes/BoardingScreen/boarding_screen.dart';
+import 'package:app_rental/screens/routes/CheckoutScreen/checkout_screen.dart';
+import 'package:app_rental/screens/routes/DetailScreen/detail_screen.dart';
+import 'package:app_rental/screens/routes/HomeScreen/home_screen.dart';
+import 'package:app_rental/screens/routes/LoginScreen/login_screen.dart';
+import 'package:app_rental/screens/routes/ProfileScreen/profile_screen.dart';
+import 'package:app_rental/screens/routes/SpendingScreen/spending_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -57,6 +59,10 @@ class MyApp extends StatelessWidget {
           '/checkout-screen': (context) => const CheckoutScreen(),
           '/home-screen': (context) => const HomeScreen(),
           '/boarding-screen': (context) => const BoardingScreen(),
+          '/spending-screen': (context) => const SpendingScreen(),
+          // TODO contoh penggunaan authWrapper
+          // '/balance-screen': (context) =>
+          //     const AuthWrapper(child: BalanceScreen()),
 
           // '/balance-screen': (context) => const BalanceScreen(),
           // '/spending-screen': (context) => const SpendingScreen(),
@@ -111,14 +117,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> doLogout(context) async {
-    debugPrint("need logout");
-    final response = await DataService.logoutData();
-    if (response.statusCode == 200) {
-      await SecureStorageUtil.storage.delete(key: tokenStoreName);
-      Navigator.pushReplacementNamed(context, "/login-screen");
-    }
+    // debugPrint("need logout");
+    // final response = await DataService.logoutData();
+    // if (response.statusCode == 200) {
+    //   await SecureStorageUtil.storage.delete(key: tokenStoreName);
+    //   Navigator.pushReplacementNamed(context, "/login-screen");
+    // }
     // TODO perbarui nanti ketika sudah menggunakan method login
-    // Navigator.pushReplacementNamed(context, "/login-screen");
+    Navigator.pushReplacementNamed(context, "/login-screen");
   }
 
   @override

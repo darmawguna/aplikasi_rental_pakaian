@@ -7,6 +7,8 @@ class Endpoints {
   static const String nim = "1315051069";
 
   static const String datas = "$baseURLLive/api/datas";
+  static const String product = "$baseURLLive/api/products";
+  static const String payment = "$baseURLLive/api/payments";
   static const String customerService =
       "$baseURLLive/api/customer-service/$nim";
   static const String balance = "$baseURLLive/api/balance/$nim";
