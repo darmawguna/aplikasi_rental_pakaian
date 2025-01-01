@@ -11,6 +11,6 @@ class BoardingScreen extends StatefulWidget {
 class _BoardingScreenState extends State<BoardingScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text("Boarding Screen"));
+    return Scaffold(body: Text("Boarding Screen update"));
   }
 }
