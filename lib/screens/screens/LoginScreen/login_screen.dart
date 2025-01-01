@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       authCubit.login(loggedIn.accessToken);
-      // Navigator.pushReplacementNamed(context, "/balance-screen"); TODO: redirect ke screen utama
+      Navigator.pushReplacementNamed(context, "/"); 
       debugPrint(loggedIn.accessToken);
     } else {
       setState(() {
