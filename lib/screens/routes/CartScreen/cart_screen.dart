@@ -47,7 +47,7 @@ class _CartScreenState extends State<CartScreen> {
             const CartHeader(),
             const SizedBox(height: 40),
             const Text(
-              'My Orders',
+              'Myy Orders',
               style: TextStyle(
                 fontSize: 40,
                 color: Color(0xFF0D0D0E),
