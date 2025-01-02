@@ -5,6 +5,7 @@ class Endpoints {
 
   static const String baseURLLive = "http://192.168.18.10:8000";
   static const String nim = "1315051069";
+  static const String storageImage = "$baseURLLive/storage/";
 
   static const String datas = "$baseURLLive/api/datas";
   static const String product = "$baseURLLive/api/products";

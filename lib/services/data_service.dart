@@ -2,19 +2,14 @@ import 'package:app_rental/dto/product.dart';
 import 'package:app_rental/dto/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-// import 'package:my_app/dto/balances.dart';
-// import 'package:my_app/dto/datas.dart';
 import 'dart:convert';
-// import 'package:my_app/dto/spendings.dart';
 import 'package:app_rental/endpoints/endpoints.dart';
 import 'package:app_rental/utils/constants.dart';
 import 'package:app_rental/utils/secure_storage_util.dart';
 
 class DataService {
-  static Future<List<Product>> fetchDatas(String token) async {
-    // Ambil AuthCubit dari context
-
-    // Pastikan pengguna telah login dan token valid
+  static Future<List<Product>> fetchProducts(String token) async {
+   
     final response = await http.get(
       Uri.parse(Endpoints.product),
       headers: {
@@ -31,7 +26,6 @@ class DataService {
           responseData['data'] is Map<String, dynamic> &&
           responseData['data'].containsKey('produk')) {
         final produk = responseData['data']['produk'] as List<dynamic>;
-
         return produk
             .map((item) => Product.fromJson(item as Map<String, dynamic>))
             .toList();
@@ -76,48 +70,6 @@ class DataService {
     }
   }
 
-  //get balance
-  // static Future<List<Balances>> fetchBalances() async {
-  //   final response = await http.get(Uri.parse(Endpoints.balance));
-  //   if (response.statusCode == 200) {
-  //     final data = jsonDecode(response.body) as Map<String, dynamic>;
-  //     return (data['datas'] as List<dynamic>)
-  //         .map((item) => Balances.fromJson(item as Map<String, dynamic>))
-  //         .toList();
-  //   } else {
-  //     // Handle error
-  //     throw Exception('Failed to load data');
-  //   }
-  // }
-
-  //get spending
-  // static Future<List<Spendings>> fetchSpendings() async {
-  //   final response = await http.get(Uri.parse(Endpoints.spending));
-  //   if (response.statusCode == 200) {
-  //     final data = jsonDecode(response.body) as Map<String, dynamic>;
-  //     return (data['datas'] as List<dynamic>)
-  //         .map((item) => Spendings.fromJson(item as Map<String, dynamic>))
-  //         .toList();
-  //   } else {
-  //     // Handle error
-  //     throw Exception('Failed to load data');
-  //   }
-  // }
-
-  // post spending
-  // static Future<http.Response> sendSpendingData(int spending) async {
-  //   final url = Uri.parse(Endpoints.spending); // Replace with your endpoint
-  //   final data = {'spending': spending};
-
-  //   final response = await http.post(
-  //     url,
-  //     headers: {'Content-Type': 'application/json'},
-  //     body: jsonEncode(data),
-  //   );
-
-  //   return response;
-  // }
-
   //post login with email and password
   static Future<http.Response> sendLoginData(
     String email,
@@ -152,4 +104,23 @@ class DataService {
 
     return response;
   }
+
+  static Future<bool> isTokenValid() async {
+    final String? expiredAtString = await SecureStorageUtil.storage.read(
+      key: 'expired_at',
+    );
+
+    if (expiredAtString == null) {
+      return false;
+    }
+
+    final expiredAt = DateTime.tryParse(expiredAtString);
+
+    if (expiredAt == null || DateTime.now().isAfter(expiredAt)) {
+      return false;
+    }
+
+    return true;
+  }
+
 }

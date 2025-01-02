@@ -4,9 +4,19 @@ part of 'auth_cubit.dart';
 class AuthState {
   final bool isLoggedIn;
   final String? accessToken;
-  const AuthState({required this.isLoggedIn, this.accessToken});
+  final DateTime? expiredAt;
+
+  const AuthState({required this.isLoggedIn, this.accessToken, this.expiredAt});
+
+  bool get isTokenExpired {
+    if (expiredAt == null) {
+      return true; // Jika `expiredAt` null, anggap token kedaluwarsa
+    }
+    return DateTime.now().isAfter(expiredAt!);
+  }
 }
 
 final class AuthInitialState extends AuthState {
-  const AuthInitialState() : super(isLoggedIn: true, accessToken: "");
+  const AuthInitialState()
+    : super(isLoggedIn: false, accessToken: null, expiredAt: null);
 }

@@ -16,11 +16,6 @@ class AddToCartButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.network(
-            'https://cdn.builder.io/api/v1/image/assets/TEMP/8dbd97f73f83267faf05b31f80caeafb92640461a082b361977d59f2fd105853?placeholderIfAbsent=true&apiKey=f0b6280275464362ba1eb4e11a9f8717',
-            width: 24,
-            height: 24,
-          ),
           const SizedBox(width: 6),
           Text(
             'Add to cart',

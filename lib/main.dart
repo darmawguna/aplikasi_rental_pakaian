@@ -1,8 +1,12 @@
 // import 'package:app_rental/dto/payment.dart';
+import 'package:app_rental/cubit/order/order_cubit.dart';
+import 'package:app_rental/cubit/payment/payment_cubit.dart';
+import 'package:app_rental/cubit/product/product_cubit.dart';
 import 'package:app_rental/screens/routes/BoardingScreen/boarding_screen.dart';
 import 'package:app_rental/screens/routes/CheckoutScreen/checkout_screen.dart';
 import 'package:app_rental/screens/routes/DetailScreen/detail_screen.dart';
 import 'package:app_rental/screens/routes/HomeScreen/home_screen.dart';
+import 'package:app_rental/screens/routes/ListProductScreen/list_product_screen.dart';
 import 'package:app_rental/screens/routes/LoginScreen/login_screen.dart';
 import 'package:app_rental/screens/routes/ProfileScreen/profile_screen.dart';
 import 'package:app_rental/screens/routes/SpendingScreen/spending_screen.dart';
@@ -11,48 +15,43 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 // import 'package:my_app/components/auth_wrapper.dart';
 import 'package:app_rental/cubit/auth/auth_cubit.dart';
-
-// import 'package:my_app/screens/news_screen.dart';
-// import 'package:my_app/screens/routes/BalanceScreen/balance_screen.dart';
-// import 'package:my_app/screens/routes/BooksScreen/books_screen.dart';
-
-// import 'package:my_app/screens/routes/CounterScreen/counter_screen.dart';
-// import 'package:my_app/screens/routes/DatasScreen/datas_screen.dart';
-// import 'package:my_app/screens/routes/FormScreen/form_screen.dart';
-// import 'package:my_app/screens/routes/LoginScreen/login_screen.dart';
-// import 'package:my_app/screens/routes/SecondScreen/custom_screen.dart';
-// import 'package:my_app/screens/routes/SecondScreen/second_screen.dart';
-// import 'package:my_app/screens/routes/SpendingScreen/spending_screen.dart';
-// import 'package:my_app/screens/routes/WelcomeScreen/welcome_screen.dart';
-// import 'package:my_app/screens/setting_screen.dart';
-// import 'package:my_app/screens/profile_screen.dart';
 import 'package:app_rental/services/data_service.dart';
 import 'package:app_rental/utils/constants.dart';
 import 'package:app_rental/utils/secure_storage_util.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Mengecek apakah token masih valid menggunakan metode isTokenValid
+  final tokenValid = await DataService.isTokenValid();
+
+  runApp(MyApp(initialRoute: tokenValid ? '/home-screen' : '/boarding-screen'));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String initialRoute;
+  const MyApp({super.key, required this.initialRoute});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider<AuthCubit>(create: (context) => AuthCubit())],
+      providers: [
+        BlocProvider<AuthCubit>(create: (context) => AuthCubit()),
+        BlocProvider<ProductCubit>(create: (context) => ProductCubit()),
+      ],
       child: MaterialApp(
         debugShowMaterialGrid: false,
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(primarySwatch: Colors.blue),
+        initialRoute: initialRoute,
 
-        initialRoute: '/',
+        // initialRoute: '/boarding-screen',
 
         // initialRoute: '/',
         routes: {
-          '/': (context) => const MyHomePage(title: 'Home Screen'),
+          // '/': (context) => const MyHomePage(title: 'Home Screen'),
           '/login-screen': (context) => const LoginScreen(),
           '/profile-screen': (context) => const ProfileScreen(),
           '/detail-screen': (context) => const DetailScreen(),
@@ -60,20 +59,10 @@ class MyApp extends StatelessWidget {
           '/home-screen': (context) => const HomeScreen(),
           '/boarding-screen': (context) => const BoardingScreen(),
           '/spending-screen': (context) => const SpendingScreen(),
+          '/product-screen': (context) => const ProductListPage(),
           // TODO contoh penggunaan authWrapper
           // '/balance-screen': (context) =>
           //     const AuthWrapper(child: BalanceScreen()),
-
-          // '/balance-screen': (context) => const BalanceScreen(),
-          // '/spending-screen': (context) => const SpendingScreen(),
-          // '/second-screen': (context) => const SecondScreen(),
-          // '/custom-screen': (context) => const CustomScreen(),
-          // '/news-screen': (context) => const NewsScreen(),
-          // '/books-screen': (context) => const BooksScreen(),
-          // '/form-screen': (context) => const FormScreen(),
-          // '/datas-screen': (context) => const DatasScreen(),
-          // '/counter-screen': (context) => const CounterScreen(),
-          // '/welcome-screen': (context) => const WelcomeScreen(),
         },
       ),
     );
@@ -94,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const BoardingScreen(),
-    const DetailScreen()
+    const DetailScreen(),
   ];
 
   final List<String> _appBarTitles = const [
@@ -117,14 +106,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> doLogout(context) async {
-    // debugPrint("need logout");
-    // final response = await DataService.logoutData();
-    // if (response.statusCode == 200) {
-    //   await SecureStorageUtil.storage.delete(key: tokenStoreName);
-    //   Navigator.pushReplacementNamed(context, "/login-screen");
-    // }
-    // TODO perbarui nanti ketika sudah menggunakan method login
-    Navigator.pushReplacementNamed(context, "/login-screen");
+    debugPrint("need logout");
+    final response = await DataService.logoutData();
+    if (response.statusCode == 200) {
+      await SecureStorageUtil.storage.delete(key: tokenStoreName);
+      Navigator.pushReplacementNamed(context, "/boarding-screen");
+    }
   }
 
   @override
@@ -179,6 +166,8 @@ class _MyHomePageState extends State<MyHomePage> {
             listTilePush(context, 'Boarding Screen', '/boarding-screen'),
             listTilePush(context, 'Balance Screen', '/balance-screen'),
             listTilePush(context, 'Spending Screen', '/spending-screen'),
+            listTilePush(context, 'Login Screen', '/login-screen'),
+            listTilePush(context, 'Product list Screen', '/product-screen'),
             ListTile(
               title: const Text('Logout'),
               onTap: () {
@@ -221,4 +210,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-

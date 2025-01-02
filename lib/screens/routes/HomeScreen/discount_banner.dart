@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DiscountBanner extends StatelessWidget {
-  const DiscountBanner({Key? key}) : super(key: key);
+  const DiscountBanner({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +69,21 @@ class DiscountBanner extends StatelessWidget {
               ],
             ),
           ),
-          Image.network(
-            'https://cdn.builder.io/api/v1/image/assets/TEMP/1eb3a6f568644ac503eb1bc33a8e0d1c592d0df719606915aa524b60ae9a2999?placeholderIfAbsent=true&apiKey=f0b6280275464362ba1eb4e11a9f8717',
-            width: 131,
-            fit: BoxFit.contain,
-          ),
+          Container(
+            width: 200, // Tentukan lebar container
+            height: 150, // Tentukan tinggi container
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(
+                8,
+              ), // Tambahkan radius jika diperlukan
+              image: DecorationImage(
+                image: AssetImage('assets/diskon.png'),
+                fit:
+                    BoxFit.cover, // Menyesuaikan gambar dengan ukuran container
+              ),
+            ),
+          )
+
         ],
       ),
     );

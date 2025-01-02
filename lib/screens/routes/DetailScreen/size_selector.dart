@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SizeSelector extends StatelessWidget {
-  const SizeSelector({Key? key}) : super(key: key);
+  final String selectedProductSize;
+  const SizeSelector({super.key, required this.selectedProductSize});
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +21,15 @@ class SizeSelector extends StatelessWidget {
         const SizedBox(height: 16),
         Row(
           children: [
-            _SizeOption(size: 'S'),
+            _SizeOption(size: 'S', isSelected: selectedProductSize == 'S'),
             const SizedBox(width: 12),
-            _SizeOption(size: 'M'),
+            _SizeOption(size: 'M', isSelected: selectedProductSize == 'M'),
             const SizedBox(width: 12),
-            _SizeOption(size: 'L', isSelected: true),
+            _SizeOption(size: 'L', isSelected: selectedProductSize == 'L'),
             const SizedBox(width: 12),
-            _SizeOption(size: 'XL'),
+            _SizeOption(size: 'XL', isSelected: selectedProductSize == 'XL'),
             const SizedBox(width: 12),
-            _SizeOption(size: 'XXL'),
+            _SizeOption(size: 'XXL', isSelected: selectedProductSize == 'XXL'),
           ],
         ),
       ],
@@ -40,11 +41,7 @@ class _SizeOption extends StatelessWidget {
   final String size;
   final bool isSelected;
 
-  const _SizeOption({
-    Key? key,
-    required this.size,
-    this.isSelected = false,
-  }) : super(key: key);
+  const _SizeOption({required this.size, this.isSelected = false});
 
   @override
   Widget build(BuildContext context) {

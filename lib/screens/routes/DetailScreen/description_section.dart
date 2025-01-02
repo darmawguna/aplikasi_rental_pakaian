@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DescriptionSection extends StatelessWidget {
-  const DescriptionSection({Key? key}) : super(key: key);
-
+  const DescriptionSection({super.key, this.description, this.title});
+  final String? description;
+  final String? title;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Description',
+          '$title',
           style: GoogleFonts.lexendDeca(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -27,7 +28,8 @@ class DescriptionSection extends StatelessWidget {
             ),
             children: const [
               TextSpan(
-                text: 'Lorem ipsum dolor sit amet consectetur. Ornare urna eleifend hac egestas ut eu. Hac amet aliquet hac lobortis neque tortor. ',
+                text:
+                    'Lorem ipsum dolor sit amet consectetur. Ornare urna eleifend hac egestas ut eu. Hac amet aliquet hac lobortis neque tortor. ',
               ),
               TextSpan(
                 text: 'Ornare urna eleifend hac egestas ut eur... ',
@@ -35,10 +37,7 @@ class DescriptionSection extends StatelessWidget {
               ),
               TextSpan(
                 text: 'Read More',
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  height: 1.29,
-                ),
+                style: TextStyle(fontWeight: FontWeight.w500, height: 1.29),
               ),
             ],
           ),

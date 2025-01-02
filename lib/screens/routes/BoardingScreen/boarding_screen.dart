@@ -1,127 +1,117 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
-
-// class BoardingScreen extends StatefulWidget {
-//   const BoardingScreen({super.key});
-
-//   @override
-//   State<BoardingScreen> createState() => _BoardingScreenState();
-// }
-
-// class _BoardingScreenState extends State<BoardingScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(body: Text("Boarding Screen update"));
-//   }
-// }
-
+import 'package:app_rental/cubit/auth/auth_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BoardingScreen extends StatefulWidget {
+class BoardingScreen extends StatelessWidget {
   const BoardingScreen({super.key});
 
   @override
-  State<BoardingScreen> createState() => _BoardingScreenState();
-}
-
-class _BoardingScreenState extends State<BoardingScreen> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: StyleShoppingWidget(),
-      ),
-    );
+    return Scaffold(body: const StyleShoppingWidget());
   }
 }
 
 class StyleShoppingWidget extends StatelessWidget {
-  const StyleShoppingWidget({Key? key}) : super(key: key);
+  const StyleShoppingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(40),
-        image: DecorationImage(
-          image: AssetImage('assets/boarding.jpg'), // Menggunakan gambar dari asset
-          fit: BoxFit.cover, // Mengatur cara gambar ditampilkan
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(40),
+        topRight: Radius.circular(40),
+      ),
+      child: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/boarding.jpg'), // Gambar dari asset
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      constraints: const BoxConstraints(
-        maxWidth: 480,
-      ),
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(height: 532),
-          Text(
-            'Create your own\nstyle now',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 32,
-              fontWeight: FontWeight.w600,
-              height: 1.25,
-              letterSpacing: 0.64,
-              fontFamily: 'Lexend Deca',
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 24),
-          SizedBox(
-            width: 281,
-            child: Text(
-              'Lorem ipsum dolor sit amet consectetur augue nibh molestie varius mi adipiscing. Velit',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                height: 1.57,
-                fontFamily: 'Lexend Deca',
+        constraints: const BoxConstraints.expand(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.5),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
+                ),
               ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const SizedBox(height: 28),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: MaterialButton(
-              onPressed: () {
-                // Tambahkan logika untuk tombol di sini
-              },
-              height: 48,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Start Shopping',
-                    style: TextStyle(
-                      color: Color(0xFF2B2B2B),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0.32,
-                      fontFamily: 'Lexend Deca',
+                    'butuh jas hanya 1 hari\ncari disini',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      'sewa pakaian tanpa ribet, cari di sewakami',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(width: 6),
-                  Image.network(
-                    'https://cdn.builder.io/api/v1/image/assets/TEMP/b4e09b62d2b2be6be3f55142b996f5d9febedaa84f7281a7a5eb2d2780ab7117?placeholderIfAbsent=true&apiKey=f0b6280275464362ba1eb4e11a9f8717',
-                    width: 24,
-                    height: 24,
-                    fit: BoxFit.contain,
+                  const SizedBox(height: 28),
+                  // BlocBuilder to listen to AuthCubit changes
+                  BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, state) {
+                      final isLoggedIn = state.isLoggedIn;
+
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            debugPrint("click");
+                            if (isLoggedIn) {
+                              Navigator.pushNamed(context, '/');
+                            } else {
+                              Navigator.pushNamed(context, '/login-screen');
+                            }
+                          },
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            height: 48,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Start Shopping',
+                                style: TextStyle(
+                                  color: Color(0xFF2B2B2B),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.32,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
+                  const SizedBox(height: 34),
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 34),
-        ],
+          ],
+        ),
       ),
     );
   }

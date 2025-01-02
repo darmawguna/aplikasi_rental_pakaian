@@ -1,78 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:app_rental/dto/product.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:app_rental/cubit/product/product_cubit.dart';
 
-class ProductGrid extends StatelessWidget {
-  const ProductGrid({Key? key}) : super(key: key);
+class ProductGrid extends StatefulWidget {
+  const ProductGrid({super.key});
+
+  @override
+  State<ProductGrid> createState() => _ProductGridState();
+}
+
+class _ProductGridState extends State<ProductGrid> {
+  // final List<bool> _isFavoriteList = [
+  //   false,
+  //   false,
+  // ]; // Status favorit untuk setiap produk
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildProductCard(
-              'https://cdn.builder.io/api/v1/image/assets/TEMP/e38424c77239862a6a308a085b351b546faa71ebe6f74dad69a8d9fc4f9037d9?placeholderIfAbsent=true&apiKey=f0b6280275464362ba1eb4e11a9f8717',
-              'Men Full Sleeve Shirt',
-              '30.49',
-              '35.00',
-            ),
-            _buildProductCard(
-              'https://cdn.builder.io/api/v1/image/assets/TEMP/520b6d891ed62c086c624615af84e0072bbb3da2ddfec548b85f2adce9a474f9?placeholderIfAbsent=true&apiKey=f0b6280275464362ba1eb4e11a9f8717',
-              'Women Blazer',
-              '24.99',
-              '28.99',
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Image.network(
-              'https://cdn.builder.io/api/v1/image/assets/TEMP/0db18d21bed73d1c81d727e4608551ad4f19abbfedd1934beda513e965a50698?placeholderIfAbsent=true&apiKey=f0b6280275464362ba1eb4e11a9f8717',
-              width: 164,
-              fit: BoxFit.contain,
-            ),
-            Image.network(
-              'https://cdn.builder.io/api/v1/image/assets/TEMP/f5b0d59ad432770a2fc02324b5e7ac217f85ec33de75d20c92f99d0f1d52c513?placeholderIfAbsent=true&apiKey=f0b6280275464362ba1eb4e11a9f8717',
-              width: 164,
-              fit: BoxFit.contain,
-            ),
-          ],
+        BlocBuilder<ProductCubit, ProductState>(
+          builder: (context, state) {
+            if (state is ProductLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is ProductLoaded) {
+              return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: 0.75,
+                ),
+                itemCount: state.products.length,
+                itemBuilder: (context, index) {
+                  return _buildProductCard(state.products[index]);
+                },
+              );
+            } else if (state is ProductError) {
+              return Center(child: Text("$state.errorMessage"));
+            }
+            return const SizedBox.shrink();
+          },
         ),
       ],
     );
   }
 
-  Widget _buildProductCard(
-    String imageUrl,
-    String title,
-    String price,
-    String originalPrice,
-  ) {
+  Widget _buildProductCard(Product product) {
     return SizedBox(
       width: 164,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(
-            imageUrl,
-            width: 164,
-            fit: BoxFit.contain,
+          Stack(
+            children: [
+              // Image.network(imageUrl, width: 164, fit: BoxFit.contain),
+              // Positioned(
+              //   top: 0,
+              //   right: 0,
+              //   child: IconButton(
+              //     onPressed: () {
+              //       setState(() {
+              //         _isFavoriteList[index] = !_isFavoriteList[index];
+              //       });
+              //     },
+              //     icon: Icon(
+              //       _isFavoriteList[index]
+              //           ? Icons.favorite
+              //           : Icons.favorite_border,
+              //       color:
+              //           _isFavoriteList[index]
+              //               ? const Color(0xFFE91E63)
+              //               : Colors.grey,
+              //     ),
+              //   ),
+              // ),
+            ],
           ),
           const SizedBox(height: 8),
           Text(
-            title,
+            product.productName,
             style: GoogleFonts.lexendDeca(
               fontSize: 14,
               color: const Color(0xFF121212),
             ),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '\$$price',
+                "$product.productPrice",
                 style: GoogleFonts.lexendDeca(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -81,16 +100,50 @@ class ProductGrid extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              Text(
-                '\$$originalPrice',
-                style: GoogleFonts.lexendDeca(
-                  fontSize: 11,
-                  letterSpacing: 0.11,
-                  color: const Color(0xFF9A9A9A),
-                  decoration: TextDecoration.lineThrough,
-                ),
+              Row(
+                children: [
+                  Text("stok :"),
+                  Text(
+                    "$product.productAvailability",
+                    style: GoogleFonts.lexendDeca(
+                      fontSize: 11,
+                      letterSpacing: 0.11,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
               ),
             ],
+          ),
+          const SizedBox(height: 8),
+          ElevatedButton(
+            onPressed: () {
+              debugPrint("Add to Cart clicked");
+            },
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.resolveWith<Color>((
+                Set<WidgetState> states,
+              ) {
+                if (states.contains(WidgetState.hovered)) {
+                  return Colors.grey; // Warna saat di-hover
+                }
+                return Colors.black12; // Warna default
+              }),
+              shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              minimumSize: WidgetStateProperty.all<Size>(
+                const Size(double.infinity, 36),
+              ),
+            ),
+            child: Text(
+              'Add to Cart',
+              style: GoogleFonts.lexendDeca(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),
