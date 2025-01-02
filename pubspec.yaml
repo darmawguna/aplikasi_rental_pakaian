@@ -76,6 +76,7 @@ flutter:
   assets:
     - assets/boarding.jpg
     - assets/detail.jpg
+    - assets/home.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
