@@ -1,10 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class DateSelector extends StatelessWidget {
-  const DateSelector({Key? key}) : super(key: key);
+class DateSelector extends StatefulWidget {
+  final Function(DateTime startDate, DateTime endDate) onDateSelected;
+
+  const DateSelector({Key? key, required this.onDateSelected})
+    : super(key: key);
+
+  @override
+  _DateSelectorState createState() => _DateSelectorState();
+}
+
+class _DateSelectorState extends State<DateSelector> {
+  DateTime? startDate;
+  DateTime? endDate;
+
+  Future<void> _selectDateRange() async {
+    final DateTimeRange? picked = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime.now().subtract(const Duration(days: 30)),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+      initialDateRange:
+          startDate != null && endDate != null
+              ? DateTimeRange(start: startDate!, end: endDate!)
+              : null,
+    );
+
+    if (picked != null) {
+      setState(() {
+        startDate = picked.start;
+        endDate = picked.end;
+      });
+
+      widget.onDateSelected(picked.start, picked.end);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final dateFormat = DateFormat('yyyy-MM-dd');
+
     return Padding(
       padding: const EdgeInsets.only(top: 34),
       child: Row(
@@ -12,51 +47,21 @@ class DateSelector extends StatelessWidget {
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
-                'Start Date & End Date',
-                style: TextStyle(
-                  color: Color(0xFF797780),
-                ),
+                'Start Date: ${startDate != null ? dateFormat.format(startDate!) : 'Not Selected'}',
+                style: const TextStyle(color: Color(0xFF797780)),
               ),
-              SizedBox(height: 13),
+              const SizedBox(height: 8),
               Text(
-                'Total Items',
-                style: TextStyle(
-                  color: Color(0xFF797780),
-                ),
+                'End Date: ${endDate != null ? dateFormat.format(endDate!) : 'Not Selected'}',
+                style: const TextStyle(color: Color(0xFF797780)),
               ),
             ],
           ),
-          Column(
-            children: [
-              Image.network(
-                'https://cdn.builder.io/api/v1/image/assets/TEMP/2de24958c99f0c828d0b91bcb3bc7213c59c6e75dab6ef5e0121b82eb41c5c2a',
-                width: 24,
-                height: 24,
-              ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Image.network(
-                    'https://cdn.builder.io/api/v1/image/assets/TEMP/597eaf4fc3e08498494202fc92e422da116aea73a21ce8721e070fc78ec00b6e',
-                    width: 24,
-                    height: 24,
-                  ),
-                  const Text(
-                    '(1)',
-                    style: TextStyle(
-                      color: Color(0xFF797780),
-                    ),
-                  ),
-                  Image.network(
-                    'https://cdn.builder.io/api/v1/image/assets/TEMP/c1d66185276f026e5104153536ce73d2813f3c33081eeacd273b572080346f66',
-                    width: 24,
-                    height: 24,
-                  ),
-                ],
-              ),
-            ],
+          ElevatedButton(
+            onPressed: _selectDateRange,
+            child: const Text('Select Dates'),
           ),
         ],
       ),

@@ -1,11 +1,14 @@
+import 'package:app_rental/cubit/cart/cart_cubit.dart';
+import 'package:app_rental/cubit/cart/cart_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_rental/cubit/product/product_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_rental/endpoints/endpoints.dart';
 import 'size_selector.dart';
-import 'color_selector.dart';
+// import 'color_selector.dart';
 import 'description_section.dart';
-import 'add_to_cart_button.dart';
+// import 'add_to_cart_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DetailScreen extends StatelessWidget {
   const DetailScreen({super.key});
@@ -13,6 +16,15 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Product Detail'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Navigasi kembali ke HomeScreen
+          },
+        ),
+      ),
       body: BlocConsumer<ProductCubit, ProductState>(
         listener: (context, state) {
           if (state is ProductError) {
@@ -80,9 +92,53 @@ class DetailScreen extends StatelessWidget {
                           // ),
                           const SizedBox(height: 22),
                           // Tombol untuk menambah produk ke keranjang
-                          AddToCartButton(
-                            // product: selectedProduct, // Uncomment jika memerlukan data produk
-                          ),
+                          // AddToCartButton(
+                          //   // product: selectedProduct, // Uncomment jika memerlukan data produk
+                          // ),
+                          Container(
+                            width: double.infinity,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF2B2B2B),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(width: 6),
+                                InkWell(
+                                  onTap: () {
+                                    context.read<CartCubit>().addToCart(
+                                      CartItem(
+                                        imageUrl:
+                                            "${Endpoints.storageImage}${selectedProduct.productImage}",
+                                        productName:
+                                            selectedProduct.productName,
+                                        productSize:
+                                            selectedProduct.productSize,
+
+                                        productPrice:
+                                            "Rp ${selectedProduct.productPrice}",
+                                      ),
+                                    );
+                                    Navigator.pushNamed(
+                                      context,
+                                      "/cart-screen",
+                                    );
+                                  },
+                                  child: Text(
+                                    'Add to cart',
+                                    style: GoogleFonts.lexendDeca(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: 0.32,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TotalSummary extends StatelessWidget {
-  const TotalSummary({Key? key}) : super(key: key);
+  const TotalSummary({super.key});
 
   @override
   Widget build(BuildContext context) {

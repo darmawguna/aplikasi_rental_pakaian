@@ -1,4 +1,3 @@
-
 import 'package:app_rental/screens/routes/HomeScreen/address_header.dart';
 import 'package:app_rental/screens/routes/HomeScreen/category_section.dart';
 import 'package:app_rental/screens/routes/HomeScreen/discount_banner.dart';
@@ -20,13 +19,29 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     final token = BlocProvider.of<AuthCubit>(context).state.accessToken;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (token != null && token.isNotEmpty) {
+        context.read<ProductCubit>().fetchProducts(token);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Token tidak ditemukan. Harap login terlebih dahulu.',
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  Future<void> _refreshProducts() async {
+    final token = BlocProvider.of<AuthCubit>(context).state.accessToken;
     if (token != null && token.isNotEmpty) {
-      // Jika token tersedia, panggil fetchProducts dengan token tersebut
-      context.read<ProductCubit>().fetchProducts(token);
+      context.read<ProductCubit>().clearCache(); // Bersihkan cache
+      await context.read<ProductCubit>().fetchProducts(token); // Fetch ulang
     } else {
-      // Tampilkan pesan jika token tidak ditemukan
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Token tidak ditemukan. Harap login terlebih dahulu.'),
         ),
       );
@@ -36,38 +51,35 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:
-          true, // Menghindari tumpang tindih dengan keyboard
-      body: SingleChildScrollView(
-        // Membungkus seluruh konten dengan SingleChildScrollView
-        child: Container(
-          width:
-              MediaQuery.of(
-                context,
-              ).size.width, // Menggunakan lebar penuh layar
-          height:
-              MediaQuery.of(
-                context,
-              ).size.height, // Menggunakan tinggi penuh layar
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40),
-            color: Colors.white,
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-          child: Column(
-            children: const [
-              AccountHeader(),
-              SizedBox(height: 24),
-              DiscountBanner(),
-              SizedBox(height: 24),
-              CategorySection(),
-              SizedBox(height: 16),
-              ProductGrid(),
-              // SizedBox(height: 16),
-            ],
+      // appBar: AppBar(title: const Text('Home')),
+      body: RefreshIndicator(
+        onRefresh: _refreshProducts,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              color: Colors.white,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                SizedBox(height: 24),
+                AccountHeader(),
+                SizedBox(height: 24),
+                DiscountBanner(),
+                SizedBox(height: 24),
+                CategorySection(),
+                SizedBox(height: 16),
+                ProductGrid(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+

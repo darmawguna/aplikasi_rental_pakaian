@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddToCartButton extends StatelessWidget {
-  const AddToCartButton({Key? key}) : super(key: key);
+  const AddToCartButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +17,19 @@ class AddToCartButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(width: 6),
-          Text(
-            'Add to cart',
-            style: GoogleFonts.lexendDeca(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 0.32,
-              color: Colors.white,
+          InkWell(
+            onTap: () {
+               
+              Navigator.pushNamed(context, "/cart-screen");
+            },
+            child: Text(
+              'Add to cart',
+              style: GoogleFonts.lexendDeca(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 0.32,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
