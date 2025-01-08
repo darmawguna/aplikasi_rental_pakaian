@@ -15,7 +15,7 @@ class ShoppingCartIcon extends StatelessWidget {
           onTap: () {
             Navigator.pushNamed(context, "/cart-screen");
             // Tindakan yang dilakukan ketika ikon keranjang diklik
-            print("Ikon keranjang diklik");
+            // print("Ikon keranjang diklik");
           },
           child: Stack(
             children: [
@@ -39,7 +39,7 @@ class ShoppingCartIcon extends StatelessWidget {
                               padding: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
                                 color: Colors.red,
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(14),
                               ),
                               constraints: const BoxConstraints(
                                 minWidth: 16,

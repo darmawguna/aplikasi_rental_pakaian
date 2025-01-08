@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_rental/cubit/auth/auth_cubit.dart';
 import 'package:app_rental/screens/routes/LoginScreen/login_screen.dart';
-import 'package:app_rental/utils/constants.dart';
-import 'package:app_rental/utils/secure_storage_util.dart';
 
 class AuthWrapper extends StatelessWidget {
   final Widget child;
@@ -11,38 +9,20 @@ class AuthWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authCubit = BlocProvider.of<AuthCubit>(context);
-
-    return FutureBuilder<String?>(
-      future: _getAccessTokenFromSecureStorage(),
-      builder: (context, snapshot) {
-        final storedAccessToken = snapshot.data;
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (storedAccessToken != null &&
-              storedAccessToken == authCubit.state.accessToken) {
-            return child; // Display the child screen if tokens match
-          } else {
-            return const LoginScreen(); // Redirect if no token or mismatch
-          }
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        // Periksa apakah token ada dan valid
+        if (state.isLoggedIn && !state.isTokenExpired) {
+          return child; // Tampilkan halaman child jika login dan token valid
         } else {
-          // Show a loading indicator while fetching the token
-          return const Center(child: CircularProgressIndicator());
+          // Jika tidak ada token atau token kedaluwarsa, arahkan ke halaman login
+          // Menggunakan `Navigator.pushReplacementNamed` untuk mencegah pengembalian ke halaman sebelumnya
+          Future.microtask(() {
+            Navigator.pushReplacementNamed(context, "/login-screen");
+          });
+          return const SizedBox.shrink(); // Sembunyikan widget jika sedang mengalihkan ke halaman login
         }
       },
     );
-  }
-
-  Future<String?> _getAccessTokenFromSecureStorage() async {
-    try {
-      final accessToken = await SecureStorageUtil.storage.read(
-        key: tokenStoreName,
-      );
-      return accessToken;
-    } catch (e) {
-      // Handle potential errors (e.g., storage unavailable, decryption issues)
-      debugPrint('Error while retrieving access token: $e');
-      return null;
-    }
   }
 }

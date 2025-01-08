@@ -21,7 +21,10 @@ class DetailScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Navigasi kembali ke HomeScreen
+            Navigator.pushNamed(
+              context,
+              '/home-screen',
+            ); // Navigasi kembali ke HomeScreen
           },
         ),
       ),

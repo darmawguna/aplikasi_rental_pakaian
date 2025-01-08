@@ -5,26 +5,43 @@ class CartCubit extends Cubit<List<CartItem>> {
   CartCubit() : super([]);
 
   // Fungsi untuk menambah item ke keranjang
+  // void addToCart(CartItem item) {
+  //   final currentItems = List<CartItem>.from(state);
+  //   // currentItems.add(item);
+  //   final existingItemIndex = currentItems.indexWhere(
+  //     (cartItem) => cartItem.productId == item.productId,
+  //   );
+
+  //   if (existingItemIndex != -1) {
+  //     // Jika item sudah ada, tambahkan quantity
+  //     final existingItem = currentItems[existingItemIndex];
+  //     currentItems[existingItemIndex] = existingItem.copyWith(
+  //       quantity: existingItem.quantity + 1,
+  //     );
+  //   } else {
+  //     // Jika item belum ada, tambahkan sebagai item baru
+  //     currentItems.add(item);
+  //   }
+
+  //   emit(currentItems); // Emit pembaruan ke UI
+  // }
+
   void addToCart(CartItem item) {
     final currentItems = List<CartItem>.from(state);
-    // currentItems.add(item);
+
+    // Cek apakah produk dengan ID yang sama sudah ada di keranjang
     final existingItemIndex = currentItems.indexWhere(
       (cartItem) => cartItem.productId == item.productId,
     );
 
-    if (existingItemIndex != -1) {
-      // Jika item sudah ada, tambahkan quantity
-      final existingItem = currentItems[existingItemIndex];
-      currentItems[existingItemIndex] = existingItem.copyWith(
-        quantity: existingItem.quantity + 1,
-      );
-    } else {
-      // Jika item belum ada, tambahkan sebagai item baru
+    if (existingItemIndex == -1) {
+      // Jika item belum ada, tambahkan produk baru (tanpa mengubah quantity)
       currentItems.add(item);
     }
 
     emit(currentItems); // Emit pembaruan ke UI
   }
+
 
   // Fungsi untuk menghapus item dari keranjang
   void removeFromCart(CartItem item) {

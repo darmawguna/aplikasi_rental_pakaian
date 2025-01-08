@@ -1,3 +1,5 @@
+import 'package:app_rental/cubit/cart/cart_cubit.dart';
+import 'package:app_rental/cubit/cart/cart_state.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app_rental/dto/product.dart';
@@ -111,7 +113,18 @@ class ProductGrid extends StatelessWidget {
             const SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
-                debugPrint("Add to Cart clicked");
+                context.read<CartCubit>().addToCart(
+                  CartItem(
+                    productId: product.id,
+                    imageUrl:
+                        "${Endpoints.storageImage}${product.productImage}",
+                    productName: product.productName,
+                    productSize: product.productSize,
+
+                    productPrice: "Rp ${product.productPrice}",
+                  ),
+                );
+                // Navigator.pushNamed(context, "/cart-screen");
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black12,

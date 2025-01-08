@@ -1,10 +1,7 @@
 import 'package:app_rental/cubit/cart/cart_state.dart';
-import 'package:app_rental/screens/routes/CartScreen/widgets/quantity_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app_rental/screens/routes/CartScreen/widgets/cart_header.dart';
-import 'package:app_rental/screens/routes/CartScreen/widgets/checkout_button.dart';
-import 'package:app_rental/screens/routes/CartScreen/widgets/date_selector.dart';
 import 'package:app_rental/screens/routes/CartScreen/widgets/order_item.dart';
 import 'package:app_rental/screens/routes/CartScreen/widgets/total_summary.dart';
 import 'package:app_rental/cubit/cart/cart_cubit.dart';
@@ -20,6 +17,17 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Cart Screen'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            // Navigator.pop(context); // Navigasi kembali ke HomeScreen
+            // Navigator.pushnamed('/home');
+            Navigator.pushNamed(context, '/home-screen');
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Container(
           decoration: BoxDecoration(

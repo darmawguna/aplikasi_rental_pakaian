@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       debugPrint(loggedIn.accessToken);
       debugPrint(expiredAtIsoString);
+      
 
       authCubit.login(loggedIn.accessToken, loggedIn.expiredAt);
       Navigator.pushReplacementNamed(context, "/home-screen");
