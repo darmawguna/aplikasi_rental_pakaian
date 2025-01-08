@@ -25,4 +25,7 @@ class AuthCubit extends Cubit<AuthState> {
   bool isSessionActive() {
     return state.isLoggedIn && !state.isTokenExpired;
   }
+
+  
+
 }

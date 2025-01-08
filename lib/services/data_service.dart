@@ -9,7 +9,6 @@ import 'package:app_rental/utils/secure_storage_util.dart';
 
 class DataService {
   static Future<List<Product>> fetchProducts(String token) async {
-   
     final response = await http.get(
       Uri.parse(Endpoints.product),
       headers: {
@@ -105,22 +104,6 @@ class DataService {
     return response;
   }
 
-  static Future<bool> isTokenValid() async {
-    final String? expiredAtString = await SecureStorageUtil.storage.read(
-      key: 'expired_at',
-    );
-
-    if (expiredAtString == null) {
-      return false;
-    }
-
-    final expiredAt = DateTime.tryParse(expiredAtString);
-
-    if (expiredAt == null || DateTime.now().isAfter(expiredAt)) {
-      return false;
-    }
-
-    return true;
-  }
+  
 
 }

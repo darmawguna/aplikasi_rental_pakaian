@@ -1,6 +1,6 @@
 class CartItemDto {
-  final String id; // ID unik untuk item (misalnya, UUID atau ID produk)
-  final String imageUrl; // URL gambar produk
+  final String id; 
+  final String imageUrl; 
   final String productName; // Nama produk
   final String productSize; // Ukuran produk
   final String productColor; // Warna produk

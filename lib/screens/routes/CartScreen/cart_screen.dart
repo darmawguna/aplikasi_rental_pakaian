@@ -17,7 +17,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +54,33 @@ class _CartScreenState extends State<CartScreen> {
               const Divider(height: 1, thickness: 1, color: Color(0xFFE3E3E3)),
               const SizedBox(height: 37), // Add space after the Divider
               const TotalSummary(),
-              const CheckoutButton(),
+              Padding(
+                padding: const EdgeInsets.only(top: 39),
+                child: Center(
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFFF7A00),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(90),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 39,
+                        vertical: 22,
+                      ),
+                      minimumSize: const Size(190, 0),
+                    ),
+                    child: const Text(
+                      'Checkout Now',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        letterSpacing: 0.18,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

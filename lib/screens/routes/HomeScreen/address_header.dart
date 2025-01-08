@@ -1,3 +1,4 @@
+import 'package:app_rental/screens/routes/HomeScreen/shoping_cart_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,7 +15,7 @@ class AccountHeader extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 // Tindakan yang dilakukan ketika icon orang diklik
-                print("Icon orang diklik");
+                // print("Icon orang diklik");
               },
               child: const Icon(
                 Icons.person, // Icon untuk orang
@@ -46,25 +47,7 @@ class AccountHeader extends StatelessWidget {
             ),
           ],
         ),
-        Row(
-          children: [
-            
-            const SizedBox(width: 9), // Menambahkan jarak antar icon
-            // Menambahkan icon keranjang untuk akses ke keranjang belanja dengan GestureDetector untuk klik
-            GestureDetector(
-              onTap: () {
-                // Tindakan yang dilakukan ketika icon keranjang diklik
-                print("Icon keranjang diklik");
-              },
-              child: const Icon(
-                Icons.shopping_cart, // Icon untuk keranjang belanja
-                size: 24,
-                color: Colors.black, // Warna icon bisa disesuaikan
-              ),
-            ),
-
-          ],
-        ),
+        ShoppingCartIcon()
       ],
     );
   }

@@ -7,11 +7,8 @@ part 'product_state.dart';
 class ProductCubit extends Cubit<ProductState> {
   ProductCubit() : super(ProductInitial());
 
-  // Cache untuk menyimpan data produk
   List<Product>? _cachedProducts;
 
-  // // ID produk yang sedang dipilih
-  // int? _selectedProductId;
 
   Future<void> fetchProducts(String token) async {
     // Gunakan cache jika tersedia

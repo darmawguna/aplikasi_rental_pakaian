@@ -26,15 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    testSecureStore();
-  }
-
-  Future<void> testSecureStore() async {
-    String keyStore = "local_test";
-    String valueStore = "Secure store deployed";
-    await SecureStorageUtil.storage.write(key: keyStore, value: valueStore);
-    String? localTest = await SecureStorageUtil.storage.read(key: "local_test");
-    debugPrint("secure_storage => $localTest");
+   
   }
 
   void sendLogin(context, AuthCubit authCubit) async {
@@ -62,10 +54,11 @@ class _LoginScreenState extends State<LoginScreen> {
         key: expiredTime,
         value: expiredAtIsoString,
       );
+      debugPrint(loggedIn.accessToken);
+      debugPrint(expiredAtIsoString);
 
       authCubit.login(loggedIn.accessToken, loggedIn.expiredAt);
       Navigator.pushReplacementNamed(context, "/home-screen");
-      debugPrint(loggedIn.accessToken);
     } else {
       setState(() {
         _isLoading = false;

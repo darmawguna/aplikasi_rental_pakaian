@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:app_rental/services/data_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:app_rental/dto/order.dart';
@@ -15,29 +18,45 @@ class OrderCubit extends Cubit<OrderState> {
     : super(OrderInitial());
 
   // Fungsi untuk membuat order baru
-  void createOrder(int productId, int orderQuantity, double amount) {
-    // Buat order baru
-    final newOrder = Order(
-      id: 0, // ID baru akan ditentukan oleh server setelah dikirimkan
-      userId: 1, // ID user, misalnya
-      productId: productId,
-      orderQuantity: orderQuantity,
-      amount: amount,
-      startDate: DateTime.now(),
-      endDate: DateTime.now().add(Duration(days: 3)), // Misalnya 3 hari
-      status: 'pending',
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
+  // void createOrder(
+  //   int productId,
+  //   int orderQuantity,
+  //   DateTime startDate,
+  //   DateTime endDate,
+  //   int userId,
+  // ) async {
+  //   try {
+  //     emit(OrderLoading());
 
-    emit(OrderLoading());
+  //     final response = await DataService.createOrder(
+  //       userId: userId,
+  //       productId: productId,
+  //       orderQuantity: orderQuantity,
+  //       startDate: startDate,
+  //       endDate: endDate,
+  //     );
 
-    // Simulasi pengiriman order ke server dan mendapatkan respons
-    Future.delayed(Duration(seconds: 2), () {
-      // Setelah order berhasil dibuat, simpan order dan emit state
-      emit(OrderCreated(newOrder));
-    });
-  }
+  //     if (response.statusCode == 200) {
+  //       // Parse response jika perlu
+  //       final orderData = jsonDecode(response.body);
+  //       final order = Order.fromJson(
+  //         orderData,
+  //       ); // Pastikan menggunakan DTO Order yang tepat
+
+  //       emit(
+  //         OrderCreated(order),
+  //       ); // Emit state success dengan order yang berhasil dibuat
+  //     } else {
+  //       emit(
+  //         OrderError(message: 'Failed to create order: ${response.statusCode}'),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     emit(
+  //       OrderError(message: "${e.toString()}"),
+  //     ); // Emit error jika ada masalah
+  //   }
+  // }
 
   // Fungsi untuk memperbarui status order setelah pembayaran
   void confirmOrderPayment(Order order, Payment payment) {
@@ -52,4 +71,3 @@ class OrderCubit extends Cubit<OrderState> {
     }
   }
 }
-

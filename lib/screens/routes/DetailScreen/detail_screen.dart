@@ -110,6 +110,7 @@ class DetailScreen extends StatelessWidget {
                                   onTap: () {
                                     context.read<CartCubit>().addToCart(
                                       CartItem(
+                                        productId: selectedProduct.id,
                                         imageUrl:
                                             "${Endpoints.storageImage}${selectedProduct.productImage}",
                                         productName:
